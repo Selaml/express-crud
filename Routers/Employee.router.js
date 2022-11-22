@@ -7,6 +7,7 @@ import { logEmployee } from "../Controllers/Employee.controller.js";
 import { authEmployee } from "../Middlewares/EmployeeAuth.middlewar.js";
 import { updateEmployee } from "../Controllers/Employee.controller.js";
 import { deleteEmployee } from "../Controllers/Employee.controller.js";
+import {salaryEmployee} from "../Controllers/Employee.controller.js";
 
 export const Employeerouter = express.Router();
 
@@ -18,6 +19,8 @@ Employeerouter.post("/login", logEmployee);
 Employeerouter.get("/user", authEmployee);
 Employeerouter.put("/edit/:id", updateEmployee);
 Employeerouter.delete("/delete/:id", deleteEmployee);
+Employeerouter.post("/salary", salaryEmployee);
+
 
 
 

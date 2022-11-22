@@ -131,3 +131,29 @@ export const deleteEmployee = async (req, res) => {
     res.status(400).json({ msg: error.message });
   }
 };
+
+export const salaryEmployee = async (req, res) => {
+  const { gross_salary, emloyeeid,taxid} = req.body;
+ 
+  
+  try {
+    const salary = gross_salary-(taxid/100*gross_salary);
+    console.log(salary)
+    const employee = await prisma.empsalary.create({
+      data: {
+        gross_salary: gross_salary,
+        emloyeeid: emloyeeid,
+        taxid: taxid,
+        net_salary: salary,
+       
+      },
+    });
+    //res.status(201).json(employee);
+    res.status(200).json(employee);
+
+
+
+}catch (error) {
+  res.status(400).json({ msg: error.message });
+}
+};

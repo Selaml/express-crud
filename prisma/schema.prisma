@@ -25,3 +25,23 @@ model employee_roll {
 
   @@map("employee roll")
 }
+
+model empsalary {
+  id           Int @id @default(autoincrement())
+  gross_salary Int @map("gross salary")
+  net_salary   Int @map("net salary")
+  emloyeeid    Int
+  taxid        Int
+
+  @@index([emloyeeid], map: "emloyeeid")
+  @@index([taxid], map: "taxid")
+}
+
+model tax {
+  id         Int    @id @default(autoincrement())
+  Name       String @db.VarChar(100)
+  percentage Int
+  empid      Int
+
+  @@index([empid], map: "empid")
+}

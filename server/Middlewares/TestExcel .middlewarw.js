@@ -24,5 +24,5 @@ const excelFilter = (req, file, cb) => {
 */
 
  const upload= multer({ storage: storage});
-export const uploadFileMiddleware = util.promisify(upload);
+//export const uploadFileMiddleware = util.promisify(upload);
 //module.exports = uploadFileMiddleware;

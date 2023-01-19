@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `payroll` MODIFY `id` INTEGER NOT NULL AUTO_INCREMENT,
+    ADD PRIMARY KEY (`id`);

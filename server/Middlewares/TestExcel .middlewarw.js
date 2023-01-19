@@ -1,16 +1,16 @@
 import express from "express";
-const multer = import("multer");
+import multer from "multer";
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null + "./server/uploads/");
+    cb(null, "uploads/");
   },
-  filename: (req, file, cb)=> {
-    console.log(file.originalname); 
+  filename: (req, file, cb) => {
+    console.log(file.originalname);
     cb(null, file.originalname);
   },
 });
-/*
+
 const excelFilter = (req, file, cb) => {
   if (
     file.mimetype.includes("excel") ||
@@ -21,8 +21,7 @@ const excelFilter = (req, file, cb) => {
     cb("Please upload only excel file.", false);
   }
 };
-*/
 
- const upload= multer({ storage: storage});
+export const upload = multer({ storage: storage });
 //export const uploadFileMiddleware = util.promisify(upload);
 //module.exports = uploadFileMiddleware;

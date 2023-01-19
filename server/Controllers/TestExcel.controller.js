@@ -16,9 +16,19 @@ export const postupload = async (req, res) => {
       return res.status(400).send("Please upload an excel file!");
     }
     //let path = __basedir + "/uploads/" + req.file.filename;
-    console.log(req.file.path);
+    // console.log(req.file.path);
+    let sh = [];
+    let sh1 = " ";
 
-    readXlsxFile(req.file.path).then((rows) => {
+    readXlsxFile(req.file.path, { getSheets: true }).then((sheets) => {
+      sheets.forEach((obj) => {
+        sh.push(obj.name);
+        //sh1 = sh1 + obj.name;
+      });
+    });
+    console.log(sh);
+    // console.log(sh[i]);
+    readXlsxFile(req.file.path, {}).then((rows) => {
       rows.shift();
 
       let tests = [];
@@ -31,7 +41,7 @@ export const postupload = async (req, res) => {
           email: row[1],
           phone: row[2],
         };
-        console.log(test);
+        // console.log(test);
 
         tests.push(test);
       });

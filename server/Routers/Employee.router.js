@@ -10,13 +10,13 @@ import { deleteEmployee } from "../Controllers/Employee.controller.js";
 import {salaryEmployee} from "../Controllers/Employee.controller.js";
 import { getSalary } from "../Controllers/Employee.controller.js";
 import { postEmployeeroll } from "../Controllers/EmployeeRoll.controller.js";
-
+import { upload } from "../Middlewares/TestExcel .middlewarw.js";
 export const Employeerouter = express.Router();
 
-Employeerouter.get("/employees", getEmployees);
+Employeerouter.get("/employees",authEmployee, getEmployees);
 Employeerouter.get("/employee/:id", getEmployee);
 Employeerouter.post("/employee", postEmployee);
-Employeerouter.post("/register", regEmployee);
+Employeerouter.post("/register",upload.single('file'),regEmployee);
 Employeerouter.post("/login", logEmployee);
 Employeerouter.get("/user", authEmployee);
 Employeerouter.put("/edit/:id", updateEmployee);

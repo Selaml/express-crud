@@ -8,11 +8,12 @@ import { Testrouter } from "./Routers/TestExcel.router.js";
 //dotenv.config();
 var app = express();
 import bodyparser from "body-parser";
+import { profilerouter } from "./Routers/userprofile.router.js";
 app.use(cors());
 app.use(express.json());
 app.use(bodyparser.json());
 //app.use(multer());
-
+app.use(profilerouter)
 app.use(Employeerouter);
 app.use(Employeerollrouter);
 app.use(Testrouter);

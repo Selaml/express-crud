@@ -35,15 +35,17 @@ const EmployeeList = () => {
                 </thead>
                 <tbody>
              
-                    { Employees.map((employee, index) => (
+                    { Employees.map((user, index) => (
                         
-                        <tr key={ employee.id }>
+                        <tr key={ user.id }>
                             <td>{ index + 1 }</td>
-                            <td>{ employee.first_name }</td>
-                            <td>{ employee.last_name }</td>
-                            <td>{ employee.gross_salary }</td>
-                            <td>{ employee.email }</td>
-                            <td>{ employee.employee_roll.name}</td>
+                            <td>{ user.name }</td>
+                            <td>{ user.email }</td>
+                            <td>{ user.phone }</td>
+                            <td>{ user.password }</td>
+                            <td>{ user. user_roll.name}</td>
+                            
+
                             
                         </tr>
                     )) }

@@ -38,8 +38,8 @@ export const authEmployee = (req, res, next) => {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
 
-    Jwt.verify(token, process.env.SECRET_KEY, (err, employee) => {
-      //console.log(employee);
+    Jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+     // console.log(employee);
       if (err) {
         return res.sendStatus(403);
       }
@@ -47,10 +47,15 @@ export const authEmployee = (req, res, next) => {
 
       //req.body = employee;
      // console.log(employee.roll)
-      res.status(400).json("welcome employee"+ " " +employee.roll);
+     // res.status(400).json("welcome employee"+ " " +employee.roll);
+       //console.log(user)
       next();
     });
   } else {
     res.sendStatus(401);
   }
 };
+
+export const authEmployeee = (req, res, next) => {
+
+}

@@ -20,15 +20,16 @@ export const postupload = async (req, res) => {
     let sh = [];
     let sh1 = " ";
 
-    readXlsxFile(req.file.path, { getSheets: true }).then((sheets) => {
-      sheets.forEach((obj) => {
-        sh.push(obj.name);
+    //readXlsxFile(req.file.path, { getSheets: true }).then((sheets) => {
+    //  sheets.forEach((obj) => {
+     
         //sh1 = sh1 + obj.name;
-      });
-    });
-    console.log(sh);
+    //  });
+      //console.log(sh);
+   // });
+
     // console.log(sh[i]);
-    readXlsxFile(req.file.path, {}).then((rows) => {
+    readXlsxFile(req.file.path).then((rows) => {
       rows.shift();
 
       let tests = [];
@@ -61,7 +62,8 @@ export const postupload = async (req, res) => {
             message: "Uploaded the file successfully: " + req.file.originalname,
           });
         });
-    });
+      });
+   
   } catch (error) {
     console.log(error);
     res.status(500).send({

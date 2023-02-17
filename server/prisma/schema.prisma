@@ -7,10 +7,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model test_excel {
   id    Int    @id @default(autoincrement())
   name  String @db.VarChar(225)
   email String @db.VarChar(50)
   phone Int
+}
+
+model roll_permission {
+  id              Int             @id @default(autoincrement())
+  rollid          Int
+  permissionid    Int
+  user_permission user_permission @relation(fields: [permissionid], references: [id], onUpdate: Restrict, map: "roll_permission_ibfk_1")
+  user_roll       user_roll       @relation(fields: [rollid], references: [id], onUpdate: Restrict, map: "roll_permission_ibfk_2")
+
+  @@index([permissionid], map: "permissionid")
+  @@index([rollid], map: "rollid")
+}
+
+model user_permission {
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(50)
+  description     String            @db.VarChar(225)
+  roll_permission roll_permission[]
+}
+
+model user_roll {
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(50)
+  description     String            @db.VarChar(225)
+  is_deleted      Boolean           @default(false)
+  roll_permission roll_permission[]
+  users           users[]
+}
+
+model users {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(225)
+  email        String    @unique(map: "email") @db.VarChar(50)
+  phone        Int
+  password     String    @db.VarChar(225)
+  rollid       Int
+  profileimage String?   @db.VarChar(225)
+  user_roll    user_roll @relation(fields: [rollid], references: [id], onUpdate: Restrict, map: "users_ibfk_1")
+
+  @@index([rollid], map: "rollid")
+}
+
+model profile {
+  id     Int   @id @default(autoincrement())
+  image  Bytes @db.Blob
+  userid Int?
 }

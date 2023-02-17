@@ -4,14 +4,34 @@ import Jwt from "jsonwebtoken";
 import SECRET_KEY from "secret-key";
 //import { authEmployee } from "../Middlewares/EmployeeAuth.middlewar";
 //import dotenv from "dotenv";
+import { readFileSync} from 'fs'
 
 const prisma = new PrismaClient();
 
+
 export const getEmployees = async (req, res) => {
   try {
-  const response = await prisma.employee.findMany({
+  const response = await prisma.user.findMany({
       include: {
-        employee_roll:true,
+        user_roll:true,
+      },
+      
+    });
+
+    //console.log(response.includes(rollid,employee & { employee_roll: employee_roll,}));
+    
+   // console.log(response.employee_roll.name);
+    res.status(200).json(response);
+ 
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+export const getEmployeess = async (req, res) => {
+  try {
+  const response = await prisma.employee.findMany({
+      where: {
+        is_deleted:false,
       },
       
     });
@@ -44,7 +64,7 @@ export const getEmployee = async (req, res) => {
 };
 
 export const postEmployee = async (req, res) => {
-  const { first_name, last_name,gross_salary ,email, password ,rollid} = req.body;
+  const { first_name, last_name ,email, password ,rollid} = req.body;
 
   try {
     const employee = await prisma.employee.create({
@@ -52,7 +72,7 @@ export const postEmployee = async (req, res) => {
         first_name: first_name,
         last_name: last_name,
         email: email,
-        gross_salary:gross_salary,
+      //  gross_salary:gross_salary,
         password: password,
         rollid:rollid
       },
@@ -67,46 +87,54 @@ export const regEmployee = async (req, res) => {
   
  
     // const salt = bcrypt.genSaltSync(10);
-    const { first_name, last_name,gross_salary ,email, password ,rollid} = req.body;
+    const { name, email,phone, password ,rollid,profileimage} = req.body;
+   // profileimage=req.file.path;
 
   try {
+   // profileimage=;
+   
      const hash = await bcrypt.hash(password, 10);
-    const employee = await prisma.employee.create({
+    const employee = await prisma.users.create({
       data: {
-        first_name: first_name,
-        last_name: last_name,
+        //profileimage:req.file.path,
+         name: name,
+       
         email: email,
-        gross_salary:gross_salary,
+        phone:phone,
+        //gross_salary:gross_salary,
         password: hash,
-        rollid:rollid
+        rollid:rollid,
+        profileimage:readFileSync('uploads/'+ req.file.filename)
       },
     });
+    //console.log(req.file.path)
     res.status(201).json(employee);
+
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
 };
 export const logEmployee = async (req, res) => {
-  const { email, Password } = req.body;
+  const { email, password } = req.body;
   try {
-    const employee = await prisma.employee.findUnique({
+    const user = await prisma.users.findUnique({
       where: {
         email: email,
       },
     });
-    if (!employee) {
+    if (!user) {
       return res.status(404).json({ message: "employee not found" });
     }
-    const matchpassword = await bcrypt.compareSync(Password, employee.Password);
+    const matchpassword = await bcrypt.compareSync(password, user.password);
     console.log(matchpassword);
     if (!matchpassword) {
       return res.status(400).json({ message: "wrong password" });
     }
     const token = Jwt.sign(
-      { email: employee.email, id: employee._id, roll: employee.emprollid },
+      { email: user.email, id: user._id, roll: user.rollid },
       process.env.SECRET_KEY
     );
-    res.status(400).json({ tok: token, employee });
+    res.status(400).json({ tok: token, user });
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
